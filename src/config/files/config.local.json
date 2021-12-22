@@ -1,0 +1,30 @@
+{
+  "endpoint": {
+    "pokeapi": "https://pokeapi.co"
+  },
+  // database connection configuration
+  "mysql": {
+    "fastifyBoilerplate": {
+      "host": {
+        "io": "localhost",
+        "in": "localhost"
+      },
+      "port": 9301,
+      "db": "fastify_boilerplate",
+      "retry": 3,
+      "pool": 3,
+      "queue": 5
+    }
+  },
+  // application configuration
+  "server": {
+    "runMode": "local",
+    "envMode": "production",
+    "hostHash": "none",
+    "logLevel": "debug",
+    "caller": "maeum",
+    "port": 7878,
+    "swaggerHost": "localhost:7878",
+    "monitor": {}
+  }
+}

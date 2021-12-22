@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    ".eslintrc.js",
+    "tsconfig.json",
+    "tsconfig.eslint.json",
+    "tsconfig.prod.json"
+  ]
+}

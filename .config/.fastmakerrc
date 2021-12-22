@@ -1,0 +1,6 @@
+// fast-maker configuration
+{
+  "project": "tsconfig.json",
+  "handler": "src/handler",
+  "output": "src/handler"
+}

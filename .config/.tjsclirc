@@ -1,0 +1,22 @@
+{
+  // current working directory
+  "cwd": "./src/dto",
+
+  // tsconfig path
+  "project": "./tsconfig.json",
+  "watch": ".",
+
+  // TSJ generator option
+  "topRef": false,
+  "sync": true,
+  "output": "../schema",
+  "outputType": "ts",
+  "jsDoc": "extended",
+  "expose": "all",
+  "extraTags": ["dateformatex", "example", "examples", "collectionFormat"],
+  "additionalProperties": true,
+  "seperateDefinitions": true,
+
+  // template
+  "template": "import { JSONSchema7 } from 'json-schema';\n \n const %{{VARIABLE_NAME}}%: JSONSchema7 = %{{JSON_SCHEMA_CONTENT}}%;\n\n\nexport default %{{VARIABLE_NAME}}%;\n"
+}

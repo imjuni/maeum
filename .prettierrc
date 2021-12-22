@@ -1,0 +1,35 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "arrowParens": "always",
+  "parser": "typescript",
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "parser": "markdown"
+      }
+    },
+    {
+      "files": [
+        ".config/.tjsclirc",
+        ".config/.fastmakerrc"
+      ],
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": [
+        ".vscode/launch.json",
+        ".vscode/settings.json",
+        "tsconfig.prod.json",
+        "tsconfig.json"
+      ],
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
+}
