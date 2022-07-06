@@ -1,7 +1,7 @@
 {
-  "name": "@maeum/maeum",
+  "name": "maeum",
   "version": "1.0.0",
-  "description": "maeum boilerplate",
+  "description": "well made fastify.js boilerplate",
   "engines": {
     "node": ">=16.0.0"
   },
@@ -12,11 +12,12 @@
     "pack": "just --config ./.config/just.config.ts pack",
     "clean": "just --config ./.config/just.config.ts clean",
     "dev": "nodemon --config ./.config/nodemon.json",
-    "devs": "concurrently \"npm run dev\" \"npm run tjs-w\"",
+    "devs": "concurrently \"npm run dev\" \"npm run tjs-w\" \"npm run route-w\"",
     "debug": "just --config ./.config/just.config.ts debug",
     "just": "just --config ./.config/just.config.ts",
     "lint": "just --config ./.config/just.config.ts lint",
     "route": "cross-env NODE_ENV=production fast-maker route --config ./.config/.fastmakerrc",
+    "route-w": "cross-env NODE_ENV=production fast-maker watch --config ./.config/.fastmakerrc",
     "start:withoutpm2": "TZ=Asia/Seoul node --enable-source-maps src/app.js",
     "start": "TZ=Asia/Seoul ./node_modules/pm2/bin/pm2-runtime -s start .config/pm2.config.js > /dev/null",
     "test": "cross-env DEBUG=maeum:* jest --detectOpenHandles --runInBand",

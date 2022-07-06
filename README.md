@@ -1,4 +1,4 @@
-# Maeum
+# Ma-eum
 Maeum is RESTful API server boilerplate using [fastify.js](https://www.fastify.io/). Maeum don't implement wrapper function and don't change fastify.js architecture. Instead of change, static code generation using tool-chain. Maeum goal is below.
 
 1. prefer use function
@@ -11,6 +11,22 @@ Maeum is RESTful API server boilerplate using [fastify.js](https://www.fastify.i
 express.js and koa.js, nest.js are good framework. But express.js don't support async/await handler(Also you can use by simple middleware implement or using [express-async-handler](https://github.com/Abazhenov/express-async-handler)). fastify.js show good performance and rich feature like json-schema validation, auto generate swagger document, etc. Also fastify.js is unopinionated web framework!
 
 Maeum flow fastify.js architecture. And use fully fastify.js feature, for example json-schema validation and swagger documentation, routing. Maeum offer same way to same feature.
+
+# Usage
+```
+# Clone the boilerplate:
+git clone --depth=1 https://github.com/imjuni/maeum your-project-name
+
+cd your-project-name
+npm install
+
+# run develop mode
+npm run dev
+
+# run develop mode with route, json-schema watch mode
+npm run devs
+```
+# Mechanics
 
 ## Routing
 Maeum auto generate route.ts file using directory structure. For example, `handler/get/v1/poke-detail` directory structure generated below.
