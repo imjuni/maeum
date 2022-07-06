@@ -11,22 +11,25 @@ import * as uuid from 'uuid';
 
 const time = () => dayjs().format('[yy-MM-dd HH:mm:ss]');
 const artifactName = 'maeum-artifact';
+const includeNodeModules = process.env.ENV_INCLUDE_NODE_MODULES === 'on';
 
 (async () => {
-  const distPostfixPath = 'dist';
+  const distPath = 'dist';
   const artifactPath = 'artifact';
   const sourceFilePath = path.resolve(path.join(__dirname, '..'));
-  const distPath = path.join(sourceFilePath, artifactPath, distPostfixPath);
 
   const decorated = figlet.textSync('Artifact!', { font: 'Bloody' });
   console.log(chalk.red(decorated));
-  console.log(chalk.yellow(`${time()} 배포용 아티펙트 zip 파일을 생성합니다`));
+  console.log(chalk.yellow(`${time()} create compressed artifact file`));
 
-  console.log(chalk.yellow(`${time()} artifact 디렉터리를 생성하고, dist 디렉터리를 이동합니다`));
-  shelljs.mkdir('-p', artifactPath);
-  shelljs.mv(distPostfixPath, artifactPath);
+  console.log(chalk.yellow(`${time()} rename dist > artifact`));
+  shelljs.mv(distPath, artifactPath);
 
-  console.log(chalk.yellow(`${time()} 배포용 package.json 파일을 생성합니다`));
+  console.log(
+    chalk.yellow(
+      `${time()} create package.json file for deply: remove version range(~, ^ character)`,
+    ),
+  );
   const parsedPackageJSON = JSON.parse(
     readFileSync(path.join(sourceFilePath, 'package.json')).toString(),
   );
@@ -46,20 +49,35 @@ const artifactName = 'maeum-artifact';
     JSON.stringify(parsedPackageJSON, null, 2),
   );
 
-  console.log(chalk.yellow(`${time()} resources 파일을 복사합니다`));
-  shelljs.cp('-r', path.join(sourceFilePath, 'resources'), path.join(distPath, 'resources'));
-
-  console.log(chalk.yellow(`${time()} ${artifactName}-${artifactID}.zip 파일로 압축합니다`));
+  console.log(chalk.yellow(`${time()} compress: ${artifactName}-${artifactID}.zip`));
   const artifactFilename = `${artifactName}-${artifactID}.zip`;
-  const artifactZip = createWriteStream(path.join(sourceFilePath, artifactFilename)); // write stream 만들고,
+  const artifactZip = createWriteStream(path.join(sourceFilePath, artifactFilename));
   const compressor = archiver('zip', { zlib: { level: 9 } });
 
-  console.log(chalk.yellow(`${time()} node_modules 디렉터리를 포함하여 압축을 진행합니다`));
+  if (includeNodeModules) {
+    console.log(
+      chalk.yellow(
+        `${time()} include node_modules directory on compressed artifact file: ${artifactFilename}`,
+      ),
+    );
+  }
 
   compressor.pipe(artifactZip);
-  compressor.directory(artifactPath, false); // directory를 recursive로 압축
-  compressor.directory(path.join(sourceFilePath, 'node_modules'), 'node_modules'); // directory를 recursive로 압축
-  compressor.directory(path.join(sourceFilePath, 'src'), 'src'); // directory를 recursive로 압축
+  compressor.directory(artifactPath, false); // compress directory using by recursive
+
+  if (includeNodeModules) {
+    compressor.directory(path.join(sourceFilePath, 'node_modules'), 'node_modules'); // compress directory using by recursive
+  } else {
+    console.log(
+      chalk.yellow(
+        `${time()} ${chalk.red(
+          'warn',
+        )} exclude node_modules directory on compressed artifact file: ${artifactFilename}`,
+      ),
+    );
+  }
+
+  compressor.directory(path.join(sourceFilePath, 'src'), 'src'); // compress directory using by recursive
 
   await compressor.finalize();
 

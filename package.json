@@ -1,12 +1,13 @@
 {
   "name": "@maeum/maeum",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "maeum boilerplate",
   "engines": {
     "node": ">=16.0.0"
   },
   "scripts": {
     "artifact": "just --config ./.config/just.config.ts artifact",
+    "thin-artifact": "just --config ./.config/just.config.ts thin-artifact",
     "build": "just --config ./.config/just.config.ts build",
     "pack": "just --config ./.config/just.config.ts pack",
     "clean": "just --config ./.config/just.config.ts clean",
@@ -16,8 +17,8 @@
     "just": "just --config ./.config/just.config.ts",
     "lint": "just --config ./.config/just.config.ts lint",
     "route": "cross-env NODE_ENV=production fast-maker route --config ./.config/.fastmakerrc",
-    "start:withoutpm2": "TZ=Asia/Seoul node --enable-source-maps dist/src/app.js",
-    "start": "TZ=Asia/Seoul ./node_modules/pm2/bin/pm2-runtime -s start dist/.config/pm2.config.js > /dev/null",
+    "start:withoutpm2": "TZ=Asia/Seoul node --enable-source-maps src/app.js",
+    "start": "TZ=Asia/Seoul ./node_modules/pm2/bin/pm2-runtime -s start .config/pm2.config.js > /dev/null",
     "test": "cross-env DEBUG=maeum:* jest --detectOpenHandles --runInBand",
     "tjs": "tjscli tsj -i --overwrite --config ./.config/.tjsclirc",
     "tjs-w": "tjscli tsj-w --config ./.config/.tjsclirc --overwrite --watch .",
@@ -99,6 +100,7 @@
     "my-easy-fp": "^0.13.0",
     "my-node-fp": "^0.7.0",
     "node-polyglot": "^2.4.2",
+    "pm2": "^5.2.0",
     "ts-essentials": "^9.1.2",
     "urlcat": "^2.0.4",
     "uuid": "^8.3.2",

@@ -4,7 +4,7 @@ module.exports = {
   apps: [
     {
       name: 'maeum-boilerplate',
-      script: 'dist/src/app.js',
+      script: 'maeum.js',
       instances: 0,
       watch: false,
       max_memory_restart: '2G',

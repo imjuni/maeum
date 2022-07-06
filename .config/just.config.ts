@@ -88,7 +88,18 @@ task('lint', async () => {
 });
 
 task('+artifact', async () => {
-  const cmd = `ts-node ./scripts/artifact.ts`;
+  const cmd = `cross-env ENV_INCLUDE_NODE_MODULES=on ts-node ./scripts/artifact.ts`;
+
+  logger.info('Artifact create: ', cmd);
+
+  await exec(cmd, {
+    stderr: process.stderr,
+    stdout: process.stdout,
+  });
+});
+
+task('+thin-artifact', async () => {
+  const cmd = `cross-env ENV_INCLUDE_NODE_MODULES=off ts-node ./scripts/artifact.ts`;
 
   logger.info('Artifact create: ', cmd);
 
@@ -187,3 +198,4 @@ task('debug', async () => {
 task('pack:dev', series('clean', 'lint', '+pack:dev'));
 task('pack', series('clean', '+pack:prod'));
 task('artifact', series('clean', 'lint', '+pack:prod', '+artifact'));
+task('thin-artifact', series('clean', 'lint', '+pack:prod', '+thin-artifact'));

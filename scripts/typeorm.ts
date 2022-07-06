@@ -7,7 +7,7 @@ dotenvConfig({
   path: path.join(
     process.cwd(),
     'src',
-    'configs',
+    'config',
     'files',
     `config.${getRunMode(process.env.RUN_MODE ?? 'local')}.env`,
   ),
