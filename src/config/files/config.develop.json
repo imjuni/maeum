@@ -4,13 +4,13 @@
   },
   // database connection configuration
   "mysql": {
-    "fastifyBoilerplate": {
+    "maeum": {
       "host": {
         "io": "localhost",
         "in": "localhost"
       },
       "port": 9301,
-      "db": "fastify_boilerplate",
+      "db": "maeum_boilerplate",
       "retry": 3,
       "pool": 3,
       "queue": 5
