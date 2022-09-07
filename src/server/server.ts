@@ -4,7 +4,6 @@ import fastifyMultipart from '@fastify/multipart';
 import fastifySwagger from '@fastify/swagger';
 import route from '@handler/route';
 import logging from '@logger/bootstrap';
-import addServerSchema from '@server/module/addServerSchema';
 import optionFactory from '@server/module/optionFactory';
 import onHookGlobalError from '@server/plugin/onHookGlobalError';
 import onHookResponse from '@server/plugin/onHookResponse';
@@ -26,16 +25,56 @@ export async function bootstrap(): Promise<FastifyInstance> {
 
   server.register(responeTime);
   server.register(fastifyCors);
+
+  // documentation need fix, prefix '#' character raise reference error
+  const fileUploadSchemaId = 'fileUploadSchema';
+  await server.register(fastifySwagger, swaggerConfig());
   await server.register(fastifyMultipart, {
     attachFieldsToBody: true,
-    sharedSchemaId: '#fileUploadSchema',
+    sharedSchemaId: fileUploadSchemaId,
   });
-  await server.register(fastifySwagger, swaggerConfig());
 
   server.setErrorHandler(onHookGlobalError);
   server.addHook('onResponse', onHookResponse);
 
-  await addServerSchema(server);
+  // await addServerSchema(server);
+
+  const fileSchema = server.getSchema(fileUploadSchemaId) as any;
+  server.post(
+    '/fileupload',
+    {
+      schema: {
+        tags: ['test'],
+        description: 'fileupload test',
+        consumes: ['multipart/form-data'],
+        body: {
+          // Case 01
+          // myFile1 display expect ui(swagger fileupload widget), but not passed validation
+          myFile1: {
+            ...fileSchema.properties.filename,
+            format: 'binary',
+          },
+          // Case 02
+          // myFile2 display plain object ui
+          myFile2: {
+            $ref: fileUploadSchemaId,
+          },
+          // Case 03
+          // myFile3 display string ui
+          myFile3: {
+            properties: {
+              field: {
+                allOf: [{ type: 'string', format: 'binary' }, { $ref: fileUploadSchemaId }],
+              },
+            },
+          },
+        },
+      },
+    },
+    (req) => {
+      log.trace(req.body);
+    },
+  );
 
   route(server);
 
