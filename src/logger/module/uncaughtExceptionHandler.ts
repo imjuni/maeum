@@ -7,8 +7,8 @@ const log = logging(__filename);
 
 export default function bootstrap() {
   process.on('uncaughtException', (err) => {
-    log.$('uncaughtException: ', err.message);
-    log.$('uncaughtException: ', err.stack);
+    log.trace('uncaughtException: ', err.message);
+    log.trace('uncaughtException: ', err.stack);
 
     log.crit({
       status: httpStatusCodes.INTERNAL_SERVER_ERROR,
@@ -19,7 +19,7 @@ export default function bootstrap() {
   });
 
   process.on('unhandledRejection', (reason) => {
-    log.$('unhandledRejection: ', reason);
+    log.trace('unhandledRejection: ', reason);
 
     const message = isEmpty(reason)
       ? `unknown error by [unhandledRejection] / ${reason}`

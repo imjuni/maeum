@@ -1,34 +1,33 @@
 import i18n from '@tool/i18n/i18n';
 import { fallbackLng } from '@tool/i18n/i18nConfig';
 import acceptLanguage from 'accept-language';
-import { isEmpty } from 'my-easy-fp';
 import Polyglot from 'node-polyglot';
 
 export default function getLocales(languages?: string | string[]): Polyglot {
   try {
-    if (isEmpty(languages)) {
+    if (languages == null) {
       return i18n[fallbackLng];
     }
 
     const [firstLanguage] = languages;
 
-    if (isEmpty(firstLanguage)) {
+    if (firstLanguage == null) {
       return i18n[fallbackLng];
     }
 
     const language = acceptLanguage.get(firstLanguage);
 
-    if (isEmpty(language)) {
+    if (language == null) {
       return i18n[fallbackLng];
     }
 
-    const acceptPolyglot = i18n[language];
+    const expectPolyglot = i18n[language];
 
-    if (isEmpty(acceptPolyglot)) {
+    if (expectPolyglot == null) {
       return i18n[fallbackLng];
     }
 
-    return acceptPolyglot;
+    return expectPolyglot;
   } catch {
     return i18n[fallbackLng];
   }

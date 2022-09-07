@@ -7,7 +7,7 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
-    "**/node_modules": true,
+    "**/node_modules": false,
     "**/.DS_Store": true,
     "**/build": true,
     "**/dist": false

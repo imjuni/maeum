@@ -28,8 +28,8 @@ function create(req: FastifyRequest): string | undefined {
     const err =
       catched instanceof Error ? catched : new Error(`unknown error raised from ${__filename}`);
 
-    log.$(err.message);
-    log.$(err.stack);
+    log.trace(err.message);
+    log.trace(err.stack);
 
     return undefined;
   }
@@ -70,8 +70,8 @@ export default function httpLogging(
     };
 
     if (reply.statusCode >= 400) {
-      log.$('오류발생: ', err);
-      log.$(contents);
+      log.trace('catch exception: ', err);
+      log.trace(contents);
     }
 
     if (level === undefined || level === null) {

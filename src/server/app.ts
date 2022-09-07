@@ -56,8 +56,8 @@ export async function start() {
   } catch (catched) {
     const err = isError(catched) ?? new Error('unknown error raised from application start');
 
-    log.$(err.message);
-    log.$(err.stack);
+    log.trace(err.message);
+    log.trace(err.stack);
 
     log.crit({
       status: httpStatusCodes.INTERNAL_SERVER_ERROR,

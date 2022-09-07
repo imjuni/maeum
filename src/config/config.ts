@@ -5,12 +5,12 @@ import readConfigFile from '@config/module/readConfigFile';
 import logging from '@logger/bootstrap';
 import Ajv from 'ajv';
 import { isError, isFalse } from 'my-easy-fp';
-import { DeepReadonly } from 'ts-essentials';
+import { ReadonlyDeep } from 'type-fest';
 
 const log = logging(__filename);
 
 const internalConfig: IConfiguration = {} as any;
-const config: DeepReadonly<IConfiguration> = internalConfig;
+const config: ReadonlyDeep<IConfiguration> = internalConfig;
 
 export async function bootstrap() {
   try {
@@ -33,14 +33,14 @@ export async function bootstrap() {
   } catch (catched) {
     const err = isError(catched) ?? new Error(`unknown error raised from ${__filename}`);
 
-    log.$(err.message);
-    log.$(err.stack);
+    log.trace(err.message);
+    log.trace(err.stack);
 
     throw err;
   }
 }
 
-export function getConfig(): DeepReadonly<IConfiguration> {
+export function getConfig(): ReadonlyDeep<IConfiguration> {
   return config;
 }
 

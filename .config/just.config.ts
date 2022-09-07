@@ -183,7 +183,7 @@ task('debug', async () => {
     '-r tsconfig-paths/register',
     '--inspect-brk',
     '--nolazy',
-    'src/app.ts',
+    'src/listen.ts',
   ];
   const cmd = args.join(' ');
 

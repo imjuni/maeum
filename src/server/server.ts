@@ -1,46 +1,35 @@
 import config from '@config/config';
 import fastifyCors from '@fastify/cors';
+import fastifyMultipart from '@fastify/multipart';
 import fastifySwagger from '@fastify/swagger';
 import route from '@handler/route';
 import logging from '@logger/bootstrap';
 import addServerSchema from '@server/module/addServerSchema';
+import optionFactory from '@server/module/optionFactory';
 import onHookGlobalError from '@server/plugin/onHookGlobalError';
 import onHookResponse from '@server/plugin/onHookResponse';
 import responeTime from '@server/plugin/responseTime';
 import swaggerConfig from '@server/plugin/swaggerConfig';
-import fastify, { FastifyInstance, FastifyServerOptions } from 'fastify';
-import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
+import fastify, { FastifyInstance } from 'fastify';
+import { IncomingMessage, Server, ServerResponse } from 'http';
 import httpStatusCodes from 'http-status-codes';
 import { isNotEmpty } from 'my-easy-fp';
 
 const log = logging(__filename);
 
-type THttpServerFactory = (
-  handler: (req: IncomingMessage, res: ServerResponse) => void,
-  _option: FastifyServerOptions,
-) => Server;
-
 let server: FastifyInstance<Server, IncomingMessage, ServerResponse>;
 
-/**
- * HTTP serverFactory
- */
-function httpServerFactory(handler: (req: IncomingMessage, res: ServerResponse) => void): Server {
-  const newServer = createServer((req, res) => handler(req, res));
-  newServer.keepAliveTimeout = 120 * 100;
-  return newServer;
-}
-
 export async function bootstrap(): Promise<FastifyInstance> {
-  const option: FastifyServerOptions & { serverFactory: THttpServerFactory } = {
-    ignoreTrailingSlash: true,
-    serverFactory: httpServerFactory,
-  };
+  const option = optionFactory();
 
   server = fastify(option);
 
   server.register(responeTime);
   server.register(fastifyCors);
+  await server.register(fastifyMultipart, {
+    attachFieldsToBody: true,
+    sharedSchemaId: '#fileUploadSchema',
+  });
   await server.register(fastifySwagger, swaggerConfig());
 
   server.setErrorHandler(onHookGlobalError);
@@ -100,11 +89,11 @@ export function listen(port: number): void {
       },
     });
 
-    log.$(`Server start: [${port}:] localhost:${port}-${process.pid}/start`);
+    log.trace(`Server start: [${port}:] localhost:${port}-${process.pid}/start`);
 
     // for pm2
-    // if (isNotEmpty(process.send)) {
-    //   process.send('ready');
-    // }
+    if (process.send != null) {
+      process.send('ready');
+    }
   });
 }

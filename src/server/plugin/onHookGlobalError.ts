@@ -32,13 +32,13 @@ export default function onHookGlobalError(
       status: httpStatusCodes.INTERNAL_SERVER_ERROR,
     };
 
-    log.$(
+    log.trace(
       '>> [onHookGlobalError 404] ------------------------------------------------------------',
     );
-    log.$(err.message);
-    log.$(err.stack);
-    log.$(replyMessage);
-    log.$(
+    log.trace(err.message);
+    log.trace(err.stack);
+    log.trace(replyMessage);
+    log.trace(
       '>>>>> ---------------------------------------------------------------------------------',
     );
 
@@ -66,10 +66,14 @@ export default function onHookGlobalError(
     status: httpStatusCodes.INTERNAL_SERVER_ERROR,
   };
 
-  log.$('>> [onHookGlobalError 500] ------------------------------------------------------------');
-  log.$(err.message);
-  log.$(err.stack);
-  log.$('>>>>> ---------------------------------------------------------------------------------');
+  log.trace(
+    '>> [onHookGlobalError 500] ------------------------------------------------------------',
+  );
+  log.trace(err.message);
+  log.trace(err.stack);
+  log.trace(
+    '>>>>> ---------------------------------------------------------------------------------',
+  );
 
   reply.status(httpStatusCodes.INTERNAL_SERVER_ERROR).send(body);
   httpLogging(req, reply, err);

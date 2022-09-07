@@ -20,7 +20,7 @@ test('pokemon detail test', async () => {
     url: urlcat('', '/v1/poke-detail/:name', { name: 'pikachu', tid: uuid.v4() }),
   });
 
-  log.$(res.body);
+  log.trace(res.body);
 });
 
 afterAll(async () => {

@@ -167,7 +167,7 @@ function logging(fullname: string) {
     notice: (content: Partial<ILogFormat>) => doLogging(logger.notice, content),
     info: (content: Partial<ILogFormat>) => doLogging(logger.info, content),
     debug: (content: Partial<ILogFormat>) => doLogging(logger.debug, content),
-    $: (...args: any[]) => {
+    trace: (...args: any[]) => {
       const [first, ...body] = args;
       debugLogger(first, ...body);
     },

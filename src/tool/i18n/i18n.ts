@@ -4,20 +4,20 @@ import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import Polyglot from 'node-polyglot';
 import path from 'path';
-import { DeepReadonly } from 'ts-essentials';
+import { ReadonlyDeep } from 'type-fest';
 
 const log = logging(__filename);
 
 const internalLocales: Record<string, Polyglot> = {};
-const locales: DeepReadonly<Record<string, Polyglot>> = internalLocales;
+const locales: ReadonlyDeep<Record<string, Polyglot>> = internalLocales;
 
 export async function bootstrap() {
   const localeDirPath = path.join(__dirname, '..', '..', '..', 'resources', 'locales');
 
   const supportLocales = await fs.promises.readdir(localeDirPath);
 
-  log.$('locale dir path: ', localeDirPath);
-  log.$('support language: ', supportLocales);
+  log.trace('locale dir path: ', localeDirPath);
+  log.trace('support language: ', supportLocales);
 
   acceptLanguage.languages(supportLocales);
 

@@ -1,5 +1,5 @@
 import IReqPokeDetail from '@dto/v1/poke-detail/IReqPokeDetail';
-import PokeDetailQuery from '@frame/PokeDetailQuery';
+import PokeDetailFrame from '@frame/PokeDetailFrame';
 import RestError from '@module/http/RestError';
 import httpStatusCodes from 'http-status-codes';
 import { isError } from 'my-easy-fp';
@@ -16,18 +16,18 @@ export default async function readPokeDetailByName(name: IReqPokeDetail['Params'
       });
     }
 
-    const query = new PokeDetailQuery({ name });
-    const resp = await query.execute();
+    const frame = new PokeDetailFrame({ name });
+    const resp = await frame.execute();
 
     if (resp.type === 'fail') {
       throw new RestError({
         code,
         message: 'poke api call error',
-        status: resp.status,
+        status: resp.fail.status,
       });
     }
 
-    return resp;
+    return resp.pass;
   } catch (catched) {
     const err = isError(catched) ?? new Error('unknown error raised from readPokeDetailByName');
     const restErr = new RestError({

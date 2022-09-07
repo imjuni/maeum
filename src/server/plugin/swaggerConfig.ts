@@ -1,6 +1,5 @@
 import config from '@config/config';
 import { FastifyDynamicSwaggerOptions } from '@fastify/swagger';
-// import definitions from '@schema/definitions/definitions';
 
 /** swagger configuration */
 export default function swaggerConfig(): FastifyDynamicSwaggerOptions {
@@ -20,14 +19,10 @@ export default function swaggerConfig(): FastifyDynamicSwaggerOptions {
     },
 
     uiConfig: {
-      deepLinking: false,
+      deepLinking: true,
       filter: true,
     },
 
-    // definitions,
-
     exposeRoute: config.server.runMode !== 'production',
-
-    staticCSP: false,
   };
 }
