@@ -29,7 +29,7 @@ export default function onHookGlobalError(
       message: `${polyglot.t('common.main.bad_request', {
         allowMissing: true,
       })}\n\n${replyMessage}`,
-      status: httpStatusCodes.INTERNAL_SERVER_ERROR,
+      status: httpStatusCodes.BAD_REQUEST,
     };
 
     log.trace(

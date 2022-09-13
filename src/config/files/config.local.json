@@ -23,8 +23,8 @@
     "hostHash": "none",
     "logLevel": "debug",
     "caller": "maeum",
-    "port": 7878,
-    "swaggerHost": "localhost:7878",
+    "port": 17878,
+    "swaggerHost": "localhost:17878",
     "monitor": {}
   }
 }
