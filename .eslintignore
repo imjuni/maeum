@@ -1,0 +1,20 @@
+# build
+artifact/
+dist/
+
+# log
+logs/
+
+# resource and node_modules
+node_modules/
+resources/
+
+# project configuration
+.vscode/
+.gitignore
+package.json
+package-lock.json
+
+# types
+src/@types/json-schema/index.d.ts
+

@@ -73,7 +73,7 @@ const config = {
           to: path.join(distPath, 'src', 'config', 'files'),
         },
         { from: path.join(sourcePath, 'resources'), to: path.join(distPath, 'resources') },
-        { from: path.join(sourcePath, '.config'), to: path.join(distPath, '.config') },
+        { from: path.join(sourcePath, '.configs'), to: path.join(distPath, '.configs') },
         { from: path.join(sourcePath, 'package.json'), to: path.join(distPath, 'package.json') },
         {
           from: path.join(sourcePath, 'package-lock.json'),

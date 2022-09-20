@@ -8,12 +8,15 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import httpStatusCodes from 'http-status-codes';
 import { createByfastify3 } from 'jin-curlize';
 import { isError } from 'my-easy-fp';
+import { pathToRegexp } from 'path-to-regexp';
 
 const log = logging(__filename);
 
-const skipEndpointPrefix = ['/health', '/', '/swagger.io/static/index.css'].reduce<
-  Record<string, boolean>
->((aggregation, url) => ({ ...aggregation, [url]: true }), {});
+const cacheNotHit = Symbol('exclude-cache-not-hit');
+const caches: Record<string | typeof cacheNotHit, boolean> = { [cacheNotHit]: false };
+const excludes = ['/health', '/', '/swagger.io', '/swagger/io/:suburl*'].map((url) =>
+  pathToRegexp(url),
+);
 
 function create(req: FastifyRequest): string | undefined {
   try {
@@ -42,8 +45,15 @@ export default function httpLogging(
   level?: keyof ReturnType<typeof logging>,
 ) {
   try {
-    // 로깅을 하지 않는 경우를 파악하기 위해서 검사를 한 번 한다
-    if (skipEndpointPrefix[req.raw.url ?? '']) {
+    const rawUrl = req.raw.url ?? cacheNotHit;
+
+    // check rawUrl in exclude urls
+    if (caches[rawUrl] == null) {
+      caches[rawUrl] =
+        typeof rawUrl === 'string' ? excludes.some((matcher) => matcher.test(rawUrl)) : false;
+    }
+
+    if (caches[rawUrl] === false) {
       return true;
     }
 

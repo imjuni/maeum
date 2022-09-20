@@ -3,7 +3,7 @@
 import { snakeCase } from 'change-case';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { isFalse } from 'my-easy-fp';
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 
 function getDuration(time?: string | string[] | number) {
   if (time == null) {

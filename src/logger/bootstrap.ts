@@ -1,7 +1,7 @@
 import getRunMode from '@config/module/getRunMode';
 import { ILogFormat } from '@logger/interface/ILogFormat';
 import ll from '@logger/ll';
-import colorjs, { Color } from 'colors';
+import chalk from 'chalk';
 import dayjs from 'dayjs';
 import fs from 'fs';
 import httpStatusCodes from 'http-status-codes';
@@ -13,15 +13,15 @@ import winston from 'winston';
 
 let logger: winston.Logger;
 
-const colors: Record<string, Color> = {
-  emerg: colorjs.red,
-  alert: colorjs.red,
-  crit: colorjs.red,
-  error: colorjs.red,
-  warning: colorjs.yellow,
-  notice: colorjs.yellow,
-  info: colorjs.blue,
-  debug: colorjs.gray,
+const colors: Record<string, chalk.ChalkFunction> = {
+  emerg: chalk.red,
+  alert: chalk.red,
+  crit: chalk.red,
+  error: chalk.red,
+  warning: chalk.yellow,
+  notice: chalk.yellow,
+  info: chalk.blue,
+  debug: chalk.gray,
 };
 
 function getLogLevel(level?: string): Extract<keyof winston.config.SyslogConfigSetLevels, string> {

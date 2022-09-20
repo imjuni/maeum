@@ -4,8 +4,6 @@ import { exec } from 'just-scripts-utils';
 import path from 'path';
 import * as uuid from 'uuid';
 
-const scriptConfigPath = path.join('.', '.config', 'just.config.ts');
-
 option('env', { default: { env: 'develop' } });
 
 task('schema', async () => {
@@ -48,7 +46,7 @@ task('tsc-watch', async () => {
 
 task('+pack:dev', async () => {
   const cmd = `cross-env NODE_ENV=production webpack --config ${path.join(
-    '.config',
+    '.configs',
     'webpack.config.dev.js',
   )}`;
   logger.info('Build: ', cmd);
@@ -61,7 +59,7 @@ task('+pack:dev', async () => {
 
 task('+pack:prod', async () => {
   const cmd = `cross-env NODE_ENV=production webpack --config ${path.posix.join(
-    '.config',
+    '.configs',
     'webpack.config.prod.js',
   )}`;
   logger.info('Build: ', cmd);
@@ -73,7 +71,7 @@ task('+pack:prod', async () => {
 });
 
 task('lint', async () => {
-  const cmd = `eslint --no-ignore --ext ts,tsx,json ./src/*.ts ./scripts/* ${scriptConfigPath}`;
+  const cmd = `eslint --cache --ext ts,tsx .`;
   logger.info('ESLint: ', cmd);
 
   const resp = await exec(cmd, {
@@ -139,7 +137,7 @@ task('route', async () => {
     .map(([key, value]) => `${key}=${value}`)
     .join(' ');
 
-  const cmd = `cross-env ${envPrefix} fast-maker --config ./.config/.fastmakerrc`;
+  const cmd = `cross-env ${envPrefix} fast-maker --config ./.configs/.fastmakerrc`;
 
   logger.info('Script Build: ', cmd);
 
@@ -151,7 +149,7 @@ task('route', async () => {
 
 task('test', async () => {
   const env = {
-    DEBUG: 'fb:*',
+    DEBUG: 'maeum:*',
     ENV_APPLICATION_LOG_LEVEL: 'debug',
   };
 
@@ -159,8 +157,7 @@ task('test', async () => {
     .map(([key, value]) => `${key}=${value}`)
     .join(' ');
 
-  const testPath = argv()._[1] ?? '';
-  const cmd = `${envPrefix} jest --color --fail-fast --verbose --tap ${testPath} | tap-notify | tap-nyan`;
+  const cmd = `${envPrefix} jest --color --fail-fast --verbose`;
 
   logger.info('jest test: ', cmd, argv()._);
 
