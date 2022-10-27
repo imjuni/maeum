@@ -1,21 +1,18 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { argv, logger, option, series, task } from 'just-scripts';
-import { exec } from 'just-scripts-utils';
+import execa from 'execa';
+import { argv, logger, series, task } from 'just-task';
 import path from 'path';
 import * as uuid from 'uuid';
 
-option('env', { default: { env: 'develop' } });
+const DEBUG = 'maeum:*';
 
-task('schema', async () => {
-  const cmd =
-    'cross-env DEBUG=maeum:* ts-node -r tsconfig-paths/register --files --project tsconfig.json ./scripts/schema.ts';
-  logger.info('schema markdown generator');
-
-  await exec(cmd, {
-    stderr: process.stderr,
-    stdout: process.stdout,
-  });
-});
+function splitArgs(args: string): string[] {
+  return args
+    .split(' ')
+    .map((arg) => arg.trim())
+    .filter((arg) => arg != null)
+    .filter((arg) => arg !== '');
+}
 
 task('uid', () => {
   const uid = uuid.v4();
@@ -25,143 +22,163 @@ task('uid', () => {
 });
 
 task('build', async () => {
-  const cmd = `cross-env NODE_ENV=production tsc --project ./tsconfig.json  --incremental`;
-  logger.info('TypeScript compiler build: ', cmd);
+  const cmd = `tsc`;
+  const option = `--project ./tsconfig.json  --incremental`;
 
-  await exec(cmd, {
+  logger.info('TypeScript compiler build: ', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+    },
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
 task('tsc-watch', async () => {
-  const cmd = `cross-env NODE_ENV=production tsc --watch --project ./tsconfig.json  --incremental`;
-  logger.info('TypeScript compiler build: ', cmd);
+  const cmd = `tsc`;
+  const option = `--watch --project ./tsconfig.json --incremental`;
 
-  await exec(cmd, {
+  logger.info('TypeScript compiler build: ', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+    },
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
 task('+pack:dev', async () => {
-  const cmd = `cross-env NODE_ENV=production webpack --config ${path.join(
-    '.configs',
-    'webpack.config.dev.js',
-  )}`;
-  logger.info('Build: ', cmd);
+  const cmd = `webpack`;
+  const option = `--config ${path.join('.configs', 'webpack.config.dev.js')}`;
 
-  await exec(cmd, {
+  logger.info('Build: ', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+    },
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
 task('+pack:prod', async () => {
-  const cmd = `cross-env NODE_ENV=production webpack --config ${path.posix.join(
-    '.configs',
-    'webpack.config.prod.js',
-  )}`;
-  logger.info('Build: ', cmd);
+  const cmd = `webpack`;
+  const option = `--config ${path.posix.join('.configs', 'webpack.config.prod.js')}`;
 
-  await exec(cmd, {
+  logger.info('Build: ', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+    },
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
 task('lint', async () => {
-  const cmd = `eslint --cache --ext ts,tsx .`;
-  logger.info('ESLint: ', cmd);
+  const cmd = 'eslint';
+  const option = '--cache .';
 
-  const resp = await exec(cmd, {
+  logger.info('ESLint: ', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+    },
     stderr: process.stderr,
     stdout: process.stdout,
   });
-
-  // Lint 오류 발생하면 build로 진행 안함
-  if (resp !== '') {
-    throw new Error(`lint error: \n${resp}`);
-  }
 });
 
 task('+artifact', async () => {
-  const cmd = `cross-env ENV_INCLUDE_NODE_MODULES=on ts-node ./scripts/artifact.ts`;
+  const cmd = 'ts-node';
+  const option = './scripts/artifact.ts';
 
-  logger.info('Artifact create: ', cmd);
+  logger.info('Artifact create: ', cmd, option);
 
-  await exec(cmd, {
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+      ENV_INCLUDE_NODE_MODULES: 'on',
+    },
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
 task('+thin-artifact', async () => {
-  const cmd = `cross-env ENV_INCLUDE_NODE_MODULES=off ts-node ./scripts/artifact.ts`;
+  const cmd = 'ts-node';
+  const option = './scripts/artifact.ts';
 
-  logger.info('Artifact create: ', cmd);
+  logger.info('Artifact create: ', cmd, option);
 
-  await exec(cmd, {
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+      ENV_INCLUDE_NODE_MODULES: 'off',
+    },
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
 task('clean', async () => {
-  const cmd = `rimraf ./build ./dist ./artifact`;
-  logger.info('Clean: ', cmd);
+  const cmd = 'rimraf';
+  const option = './build ./dist ./artifact';
 
-  await exec(cmd, {
+  logger.info('Clean: ', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
 task('clean:log', async () => {
-  const cmd = `rimraf ./logs/*`;
-  logger.info('Clean Log: ', cmd);
+  const cmd = 'rimraf';
+  const option = './logs/*';
 
-  await exec(cmd, {
+  logger.info('Clean Log: ', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
 task('route', async () => {
-  const env = {
-    DEBUG: 'frm:*',
-    NODE_ENV: 'production',
-  };
+  const cmd = 'fast-maker';
+  const option = '--config ./.configs/.fastmakerrc';
 
-  const envPrefix = Object.entries(env)
-    .map(([key, value]) => `${key}=${value}`)
-    .join(' ');
+  logger.info('Script Build: ', cmd, option);
 
-  const cmd = `cross-env ${envPrefix} fast-maker --config ./.configs/.fastmakerrc`;
-
-  logger.info('Script Build: ', cmd);
-
-  await exec(cmd, {
+  await execa(cmd, splitArgs(option), {
+    env: {
+      DEBUG: 'frm:*',
+      NODE_ENV: 'production',
+    },
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
 task('test', async () => {
-  const env = {
-    DEBUG: 'maeum:*',
-    ENV_APPLICATION_LOG_LEVEL: 'debug',
-  };
+  const cmd = 'jest';
+  const option = '--color --fail-fast --verbose';
 
-  const envPrefix = Object.entries(env)
-    .map(([key, value]) => `${key}=${value}`)
-    .join(' ');
+  logger.info('jest test: ', cmd, option, argv()._);
 
-  const cmd = `${envPrefix} jest --color --fail-fast --verbose`;
-
-  logger.info('jest test: ', cmd, argv()._);
-
-  await exec(cmd, {
+  await execa(cmd, splitArgs(option), {
+    env: {
+      DEBUG,
+      ENV_APPLICATION_LOG_LEVEL: 'debug',
+    },
     stderr: process.stderr,
     stdout: process.stdout,
   });
@@ -186,7 +203,7 @@ task('debug', async () => {
 
   logger.info('debug: ', cmd);
 
-  await exec(cmd, {
+  await execa(cmd, {
     stderr: process.stderr,
     stdout: process.stdout,
   });

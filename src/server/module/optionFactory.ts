@@ -1,5 +1,5 @@
 import ajvFormats from 'ajv-formats';
-import { FastifyServerOptions } from 'fastify';
+import fastify, { FastifyServerOptions } from 'fastify';
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 
 type THttpServerFactory = (
@@ -29,5 +29,5 @@ export default function optionFactory() {
     serverFactory: httpServerFactory,
   };
 
-  return option;
+  return { fastify: fastify(option), option };
 }

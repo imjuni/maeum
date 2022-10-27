@@ -3,7 +3,8 @@
   "ts-node": {
     "transpileOnly": true,
     "files": true,
-    "compilerOptions": {}
+    "compilerOptions": {},
+    "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */

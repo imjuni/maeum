@@ -2,6 +2,8 @@ import config from '@config/config';
 import fastifyCors from '@fastify/cors';
 import fastifyMultipart from '@fastify/multipart';
 import fastifySwagger from '@fastify/swagger';
+import fastifySwaggerUI from '@fastify/swagger-ui';
+import fastifyUrlData from '@fastify/url-data';
 import route from '@handler/route';
 import logging from '@logger/bootstrap';
 import addServerSchema from '@server/module/addServerSchema';
@@ -10,7 +12,8 @@ import onHookGlobalError from '@server/plugin/onHookGlobalError';
 import onHookResponse from '@server/plugin/onHookResponse';
 import responeTime from '@server/plugin/responseTime';
 import swaggerConfig from '@server/plugin/swaggerConfig';
-import fastify, { FastifyInstance } from 'fastify';
+import swaggerUiConfig from '@server/plugin/swaggerUiConfig';
+import { FastifyInstance } from 'fastify';
 import { IncomingMessage, Server, ServerResponse } from 'http';
 import httpStatusCodes from 'http-status-codes';
 import { isNotEmpty } from 'my-easy-fp';
@@ -20,17 +23,24 @@ const log = logging(__filename);
 let server: FastifyInstance<Server, IncomingMessage, ServerResponse>;
 
 export async function bootstrap(): Promise<FastifyInstance> {
-  const option = optionFactory();
+  const { fastify } = optionFactory();
 
-  server = fastify(option);
+  server = fastify;
 
+  server.register(fastifyUrlData);
   server.register(responeTime);
   server.register(fastifyCors);
+
   await server.register(fastifyMultipart, {
     attachFieldsToBody: true,
     sharedSchemaId: '#fileUploadSchema',
   });
-  await server.register(fastifySwagger, swaggerConfig());
+
+  // If server start production mode, disable swagger-ui
+  if (config.server.runMode !== 'production') {
+    await server.register(fastifySwagger, swaggerConfig());
+    await server.register(fastifySwaggerUI, swaggerUiConfig());
+  }
 
   server.setErrorHandler(onHookGlobalError);
   server.addHook('onResponse', onHookResponse);

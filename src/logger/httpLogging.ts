@@ -18,8 +18,17 @@ const excludes = ['/health', '/', '/swagger.io', '/swagger/io/:suburl*'].map((ur
   pathToRegexp(url),
 );
 
+const cacheCurls: Record<string | typeof cacheNotHit, boolean> = { [cacheNotHit]: false };
+const excludeCurls = ['/v1/images'].map((url) => pathToRegexp(url));
+
 function create(req: FastifyRequest): string | undefined {
   try {
+    const urlData = req.urlData();
+
+    if (cacheCurls[urlData.path ?? cacheNotHit] === true) {
+      return 'n/a';
+    }
+
     // recommand prettify option enable only local run-mode because newline character possible to broken log
     const command =
       config.server.runMode !== 'production'
@@ -45,16 +54,21 @@ export default function httpLogging(
   level?: keyof ReturnType<typeof logging>,
 ) {
   try {
-    const rawUrl = req.raw.url ?? cacheNotHit;
+    const urlData = req.urlData();
+    const rawUrl = urlData.path ?? cacheNotHit;
 
-    // check rawUrl in exclude urls
+    // check urlData.path in exclude urls
     if (caches[rawUrl] == null) {
-      caches[rawUrl] =
-        typeof rawUrl === 'string' ? excludes.some((matcher) => matcher.test(rawUrl)) : false;
+      caches[rawUrl] = excludes.some((matcher) => matcher.test(urlData.path ?? '<>'));
     }
 
     if (caches[rawUrl] === false) {
       return true;
+    }
+
+    // check urlData.path in exclude curl command
+    if (cacheCurls[rawUrl] == null) {
+      cacheCurls[rawUrl] = excludeCurls.some((matcher) => matcher.test(urlData.path ?? '<>'));
     }
 
     const { duration, headers, queries, params, body } = httplog(req, reply);
