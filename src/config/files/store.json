@@ -1,0 +1,93 @@
+{
+  "IReqPokeDetailQuerystring": {
+    "id": "IReqPokeDetailQuerystring",
+    "filePath": "src/dto/v1/poke-detail/IReqPokeDetail.ts",
+    "import": {
+      "name": "IReqPokeDetailQuerystring",
+      "from": []
+    },
+    "export": {
+      "name": "IReqPokeDetailQuerystring",
+      "to": []
+    },
+    "dto": false,
+    "schema": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"tid\":{\"type\":\"string\",\"description\":\"transaction id on each request\",\"format\":\"uuid\"}},\"required\":[\"tid\"]}"
+  },
+  "IReqPokeDetailParams": {
+    "id": "IReqPokeDetailParams",
+    "filePath": "src/dto/v1/poke-detail/IReqPokeDetail.ts",
+    "import": {
+      "name": "IReqPokeDetailParams",
+      "from": []
+    },
+    "export": {
+      "name": "IReqPokeDetailParams",
+      "to": []
+    },
+    "dto": false,
+    "schema": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"description\":\"Pokemon name\"}},\"required\":[\"name\"]}"
+  },
+  "IConfiguration": {
+    "id": "IConfiguration",
+    "filePath": "src/config/interface/IConfiguration.ts",
+    "import": {
+      "name": "IConfiguration",
+      "from": [
+        "IServer",
+        "IEndpoint"
+      ]
+    },
+    "export": {
+      "name": "IConfiguration",
+      "to": []
+    },
+    "dto": false,
+    "schema": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"server\":{\"$ref\":\"IServer\"},\"endpoint\":{\"$ref\":\"IEndpoint\"}},\"required\":[\"server\",\"endpoint\"],\"description\":\"서버 설정\"}"
+  },
+  "IServer": {
+    "id": "IServer",
+    "filePath": "src/config/interface/IServer.ts",
+    "import": {
+      "name": "IServer",
+      "from": []
+    },
+    "export": {
+      "name": "IServer",
+      "to": [
+        "IConfiguration"
+      ]
+    },
+    "schema": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"runMode\":{\"type\":\"string\",\"enum\":[\"local\",\"develop\",\"qa\",\"stage\",\"production\"],\"description\":\"server run mode\"},\"envMode\":{\"type\":\"string\",\"description\":\"NODE_ENV\"},\"logLevel\":{\"type\":\"string\",\"description\":\"log level\"},\"caller\":{\"type\":\"string\",\"description\":\"caller configuration, server name\"},\"port\":{\"type\":\"number\",\"description\":\"server port\"},\"swaggerHost\":{\"type\":\"string\",\"description\":\"swagger host\"}},\"required\":[\"runMode\",\"envMode\",\"logLevel\",\"caller\",\"port\",\"swaggerHost\"],\"description\":\"Maeum Boilerplate Server Application configuration\"}",
+    "dto": false
+  },
+  "IEndpoint": {
+    "id": "IEndpoint",
+    "filePath": "src/config/interface/IEndpoint.ts",
+    "import": {
+      "name": "IEndpoint",
+      "from": []
+    },
+    "export": {
+      "name": "IEndpoint",
+      "to": [
+        "IConfiguration"
+      ]
+    },
+    "schema": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"type\":\"string\"},\"description\":\"Connected RESTful server endpoint\"}",
+    "dto": false
+  },
+  "IPokemonDto": {
+    "id": "IPokemonDto",
+    "filePath": "src/dto/v1/poke-detail/IPokemonDto.ts",
+    "import": {
+      "name": "IPokemonDto",
+      "from": []
+    },
+    "export": {
+      "name": "IPokemonDto",
+      "to": []
+    },
+    "dto": true,
+    "schema": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\",\"description\":\"pokemon id\"},\"is_default\":{\"type\":\"boolean\"},\"base_experience\":{\"type\":\"number\"},\"height\":{\"type\":\"number\",\"description\":\"pokemon height\"},\"location_area_encounters\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"order\":{\"type\":\"number\"},\"species\":{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"required\":[\"name\",\"url\"]}},\"required\":[\"id\",\"is_default\",\"base_experience\",\"height\",\"location_area_encounters\",\"name\",\"order\",\"species\"],\"description\":\"Pokemon DTO\"}"
+  }
+}

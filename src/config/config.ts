@@ -1,6 +1,6 @@
 import IConfiguration from '@config/interface/IConfiguration';
+import schemas from '@config/json-schema';
 import getRunMode from '@config/module/getRunMode';
-import IConfigurationJSONSchema from '@config/module/IConfigurationJSONSchema';
 import readConfigFile from '@config/module/readConfigFile';
 import logging from '@logger/bootstrap';
 import Ajv from 'ajv';
@@ -17,7 +17,12 @@ export async function bootstrap() {
     const runMode = getRunMode();
     const readedConfig: IConfiguration = readConfigFile(runMode);
     const ajved = new Ajv();
-    const validator = ajved.compile(IConfigurationJSONSchema);
+
+    schemas.IConfiguration.import.from.forEach((schema) => {
+      ajved.addSchema(schemas[schema].schema, schemas[schema].id);
+    });
+
+    const validator = ajved.compile(schemas.IConfiguration.schema);
     const validationResult = validator(readedConfig);
 
     if (isFalse(validationResult)) {

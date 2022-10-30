@@ -29,6 +29,7 @@
   "files.associations": {
     ".fastmakerrc": "jsonc",
     ".tjsclirc": "jsonc",
+    ".ctjsrc": "jsonc",
     "config.*.json": "jsonc"
   },
   "files.eol": "\n",

@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "description": "Delicious fastify.js boilerplate",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=14.20.1"
   },
   "scripts": {
     "artifact": "just --config ./.configs/just.config.ts artifact",
@@ -21,11 +21,10 @@
     "start:withoutpm2": "TZ=Asia/Seoul node --enable-source-maps src/app.js",
     "start": "TZ=Asia/Seoul ./node_modules/pm2/bin/pm2-runtime -s start .configs/pm2.config.js > /dev/null",
     "test": "cross-env DEBUG=maeum:* jest --detectOpenHandles --runInBand",
-    "tjs": "tjscli tsj -i --overwrite --config ./.configs/.tjsclirc",
-    "tjs-w": "tjscli tsj-w --config ./.configs/.tjsclirc --overwrite --watch .",
     "tsc": "just --config ./.configs/just.config.ts tsc",
     "tsc-watch": "just --config ./.configs/just.config.ts tsc-watch",
     "typeorm": "cross-env DISABLE_RELATION_MODEL=on ts-node -r tsconfig-paths/register -r scripts/typeorm ./node_modules/typeorm/cli.js",
+    "ctjs": "ctjs --config ./.configs/.ctjsrc",
     "dd": "deps-diff md -d prod -d dev --title-list-type '*' --deps-list-type '*' --content-list-type '*'",
     "uid": "just --config ./.configs/just.config.ts uid"
   },
@@ -40,7 +39,7 @@
     "@types/archiver": "^5.3.1",
     "@types/debug": "^4.1.7",
     "@types/figlet": "^1.5.5",
-    "@types/jest": "^29.0.0",
+    "@types/jest": "^29.2.0",
     "@types/node": "^18.7.15",
     "@types/node-polyglot": "^2.4.2",
     "@types/shelljs": "^0.8.11",
@@ -50,6 +49,7 @@
     "@typescript-eslint/parser": "^5.36.2",
     "archiver": "^5.3.1",
     "copy-webpack-plugin": "^11.0.0",
+    "create-ts-json-schema": "^0.10.0",
     "cross-env": "^7.0.3",
     "deps-diff": "^1.0.0",
     "eslint": "^8.26.0",
@@ -63,7 +63,7 @@
     "execa": "^5.1.1",
     "fast-maker": "^1.1.0",
     "figlet": "^1.5.2",
-    "jest": "^28.1.2",
+    "jest": "^29.2.2",
     "just-task": "^1.6.1",
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1",
@@ -71,8 +71,7 @@
     "prettier-plugin-organize-imports": "^3.1.1",
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.5",
-    "simple-tjscli": "^1.1.2",
-    "ts-jest": "^28.0.8",
+    "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",

@@ -1,4 +1,9 @@
-export default interface IPokemon {
+/**
+ * Pokemon DTO
+ *
+ * @asDto true
+ */
+export default interface IPokemonDto {
   /** pokemon id */
   id: number;
   is_default: boolean;

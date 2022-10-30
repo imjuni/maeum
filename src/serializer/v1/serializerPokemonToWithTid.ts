@@ -1,8 +1,8 @@
-import IPokemon from '@dto/v1/poke-detail/IPokemon';
+import IPokemonDto from '@dto/v1/poke-detail/IPokemonDto';
 
 export default function serializerPokemonToWithTid(
-  pokemon: IPokemon,
+  pokemon: IPokemonDto,
   tid: string,
-): IPokemon & { tid: string } {
+): IPokemonDto & { tid: string } {
   return { ...pokemon, tid };
 }

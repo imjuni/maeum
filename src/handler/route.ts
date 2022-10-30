@@ -1,13 +1,16 @@
 import { FastifyInstance } from 'fastify';
-import IReqPokeDetail_vXR9OJd16Mi7ErFH2ubii3pmfPI8wKyi from '../dto/v1/poke-detail/IReqPokeDetail';
-import readPokeDetailByNameHandler_0subagxb2viNfout3Z8hQOjjpZPv5L8u, {
-  option as option_0subagxb2viNfout3Z8hQOjjpZPv5L8u,
+import {
+  IReqPokeDetailParams,
+  IReqPokeDetailQuerystring,
+} from '../dto/v1/poke-detail/IReqPokeDetail';
+import readPokeDetailByNameHandler_azm7AyTKp3gXvsxGx1OUnVrEH7b0dgLE, {
+  option as option_azm7AyTKp3gXvsxGx1OUnVrEH7b0dgLE,
 } from './get/v1/poke-detail/[name]';
 
 export default function routing(fastify: FastifyInstance): void {
-  fastify.get<IReqPokeDetail_vXR9OJd16Mi7ErFH2ubii3pmfPI8wKyi>(
+  fastify.get<{ Querystring: IReqPokeDetailQuerystring; Params: IReqPokeDetailParams }>(
     '/v1/poke-detail/:name',
-    option_0subagxb2viNfout3Z8hQOjjpZPv5L8u,
-    readPokeDetailByNameHandler_0subagxb2viNfout3Z8hQOjjpZPv5L8u,
+    option_azm7AyTKp3gXvsxGx1OUnVrEH7b0dgLE,
+    readPokeDetailByNameHandler_azm7AyTKp3gXvsxGx1OUnVrEH7b0dgLE,
   );
 }

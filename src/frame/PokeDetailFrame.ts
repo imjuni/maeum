@@ -1,9 +1,9 @@
 import config from '@config/config';
-import IPokemon from '@dto/v1/poke-detail/IPokemon';
+import IPokemonDto from '@dto/v1/poke-detail/IPokemonDto';
 import { JinConstructorType, JinEitherFrame } from 'jin-frame';
 import path from 'path';
 
-export default class PokeDetailFrame extends JinEitherFrame<IPokemon> {
+export default class PokeDetailFrame extends JinEitherFrame<IPokemonDto> {
   @JinEitherFrame.param()
   name: string;
 

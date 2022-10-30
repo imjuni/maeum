@@ -45,7 +45,7 @@ export async function bootstrap(): Promise<FastifyInstance> {
   server.setErrorHandler(onHookGlobalError);
   server.addHook('onResponse', onHookResponse);
 
-  await addServerSchema(server);
+  addServerSchema(server);
 
   route(server);
 
@@ -62,10 +62,7 @@ export function listen(port: number): void {
     duration: -1,
     req_method: 'SYS',
     req_url: `server/start/port:${port}/pid:${process.pid}`,
-    body: {
-      port,
-      run_mode: config.server.runMode,
-    },
+    body: { port, run_mode: config.server.runMode },
   });
 
   server.listen({ port, host: '0.0.0.0' }, (err, address) => {
@@ -77,11 +74,7 @@ export function listen(port: number): void {
         req_url: `server/start/port:${port}/pid:${process.pid}`,
         err_msg: err.message,
         err_stk: err.stack,
-        body: {
-          port,
-          run_mode: config.server.runMode,
-          address,
-        },
+        body: { port, run_mode: config.server.runMode, address },
       });
 
       throw err;
@@ -92,11 +85,7 @@ export function listen(port: number): void {
       duration: -1,
       req_method: 'SYS',
       req_url: `localhost:${port}/${process.pid}/start`,
-      body: {
-        port,
-        run_mode: config.server.runMode,
-        address,
-      },
+      body: { port, run_mode: config.server.runMode, address },
     });
 
     log.trace(`Server start: [${port}:] localhost:${port}-${process.pid}/start`);

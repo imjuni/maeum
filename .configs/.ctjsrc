@@ -1,0 +1,8 @@
+{
+  "output": "./src/config/files/store.json",
+  "project": "tsconfig.json",
+  "generator-option": {
+    "additionalProperties": true
+  },
+  "multiple": true
+}

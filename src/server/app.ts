@@ -1,4 +1,5 @@
 import config, { bootstrap as configBootstrap } from '@config/config';
+import { bootstrap as schemaBootstrap } from '@config/json-schema';
 import getRunMode from '@config/module/getRunMode';
 import logging from '@logger/bootstrap';
 import uncaughtExceptionHandlerBootstrap from '@logger/module/uncaughtExceptionHandler';
@@ -25,6 +26,7 @@ function getPort(): number {
 export async function bootstrap() {
   uncaughtExceptionHandlerBootstrap();
 
+  // Stage 02
   dotenvConfig({
     path: path.join(
       __dirname,
@@ -36,6 +38,9 @@ export async function bootstrap() {
   });
 
   // Stage 02
+  await schemaBootstrap();
+
+  // Stage 03
   configBootstrap();
 
   await Promise.all([i18nBootstrap()]);
