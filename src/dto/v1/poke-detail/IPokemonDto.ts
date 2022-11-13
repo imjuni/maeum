@@ -1,3 +1,5 @@
+import IPokemonSpeciesDto from '@dto/v1/poke-detail/IPokemonSpeciesDto';
+
 /**
  * Pokemon DTO
  *
@@ -15,8 +17,5 @@ export default interface IPokemonDto {
   name: string;
   order: number;
 
-  species: {
-    name: string;
-    url: string;
-  };
+  species: IPokemonSpeciesDto;
 }

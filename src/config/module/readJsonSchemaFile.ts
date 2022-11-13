@@ -17,10 +17,7 @@ export default function readJsonSchemaFile(): Record<string, IDatabaseRecord> {
   const keyRefs = Object.keys(parsed);
 
   keyRefs.forEach((keyRef) => {
-    const schema = parse(parsed[keyRef].schema);
-
-    parsed[keyRef].rawSchema = parsed[keyRef].schema;
-    parsed[keyRef].schema = schema;
+    parsed[keyRef].rawSchema = JSON.stringify(parsed[keyRef].schema);
   });
 
   return parsed;

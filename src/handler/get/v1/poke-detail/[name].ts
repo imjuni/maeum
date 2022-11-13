@@ -2,7 +2,6 @@ import {
   IReqPokeDetailParams,
   IReqPokeDetailQuerystring,
 } from '@dto/v1/poke-detail/IReqPokeDetail';
-import JSC_IRestError from '@module/http/JSC_IRestError';
 import readPokeDetailByName from '@module/v1/readPokeDetailByName';
 import serializerPokemonToWithTid from '@serializer/v1/serializerPokemonToWithTid';
 import { FastifyRequest, RouteShorthandOptions } from 'fastify';
@@ -15,8 +14,8 @@ export const option: RouteShorthandOptions = {
     params: { $ref: 'IReqPokeDetailParams' },
     response: {
       200: { $ref: 'IPokemonDto' },
-      400: JSC_IRestError,
-      500: JSC_IRestError,
+      400: { $ref: 'IRestError' },
+      500: { $ref: 'IRestError' },
     },
   },
 };

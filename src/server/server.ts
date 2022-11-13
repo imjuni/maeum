@@ -33,8 +33,10 @@ export async function bootstrap(): Promise<FastifyInstance> {
 
   await server.register(fastifyMultipart, {
     attachFieldsToBody: true,
-    sharedSchemaId: '#fileUploadSchema',
+    sharedSchemaId: 'fileUploadSchema',
   });
+
+  addServerSchema(server);
 
   // If server start production mode, disable swagger-ui
   if (config.server.runMode !== 'production') {
@@ -44,8 +46,6 @@ export async function bootstrap(): Promise<FastifyInstance> {
 
   server.setErrorHandler(onHookGlobalError);
   server.addHook('onResponse', onHookResponse);
-
-  addServerSchema(server);
 
   route(server);
 
