@@ -6,7 +6,6 @@ import fastifySwaggerUI from '@fastify/swagger-ui';
 import fastifyUrlData from '@fastify/url-data';
 import route from '@handler/route';
 import logging from '@logger/bootstrap';
-import addServerSchema from '@server/module/addServerSchema';
 import optionFactory from '@server/module/optionFactory';
 import onHookGlobalError from '@server/plugin/onHookGlobalError';
 import onHookResponse from '@server/plugin/onHookResponse';
@@ -35,8 +34,6 @@ export async function bootstrap(): Promise<FastifyInstance> {
     attachFieldsToBody: true,
     sharedSchemaId: 'fileUploadSchema',
   });
-
-  addServerSchema(server);
 
   // If server start production mode, disable swagger-ui
   if (config.server.runMode !== 'production') {

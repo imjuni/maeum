@@ -1,5 +1,4 @@
 import logging from '@logger/bootstrap';
-import httpLogging from '@logger/httpLogging';
 import IRestError from '@module/http/IRestError';
 import RestError from '@module/http/RestError';
 import getLocales from '@tool/i18n/getLocales';
@@ -43,7 +42,6 @@ export default function onHookGlobalError(
     );
 
     reply.status(httpStatusCodes.BAD_REQUEST).send(body);
-    httpLogging(req, reply, err);
 
     return;
   }
@@ -76,5 +74,4 @@ export default function onHookGlobalError(
   );
 
   reply.status(httpStatusCodes.INTERNAL_SERVER_ERROR).send(body);
-  httpLogging(req, reply, err);
 }
