@@ -73,6 +73,13 @@ module.exports = {
       },
     ],
     'no-underscore-dangle': ['error', { allowAfterThis: true }],
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: 'TSEnumDeclaration:not([const=true])',
+        message: "Don't declare non-const enums",
+      },
+    ],
   },
   settings: {
     'import/resolver': {

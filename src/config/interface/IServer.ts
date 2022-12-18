@@ -1,11 +1,11 @@
-import TRunMode from '@config/interface/TRunMode';
+import { TRUN_MODE } from '@config/interface/TRUN_MODE';
 
 /**
  * Maeum Boilerplate Server Application configuration
  */
 export default interface IServer {
   /** server run mode */
-  runMode: TRunMode;
+  runMode: TRUN_MODE;
 
   /** NODE_ENV */
   envMode: string;

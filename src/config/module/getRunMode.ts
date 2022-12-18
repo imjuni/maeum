@@ -1,11 +1,11 @@
-import type TRunMode from '@config/interface/TRunMode';
+import type { TRUN_MODE } from '@config/interface/TRUN_MODE';
 
 /**
- * process.env에서 RUN_MODE를 읽어서 검증 후 반환한다
- * 주의> 이 함수는 logging에서도 사용하기 때문에 logging을 호출하지 마라
- * @returns 서버 실행 환경설정을 반환한다
+ * return validate run-mode
+ *
+ * @returns TRUN_MODE
  */
-export default function getRunMode(envRunMode?: string): TRunMode {
+export default function getRunMode(envRunMode?: string): TRUN_MODE {
   const runMode = envRunMode ?? process.env.RUN_MODE ?? 'local';
 
   if (

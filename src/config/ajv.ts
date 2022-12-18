@@ -5,6 +5,7 @@ export const ajvOptions: Options = {
   coerceTypes: 'array',
   keywords: ['collectionFormat', 'example', 'binary'],
 };
+
 const ajv = new Ajv(ajvOptions);
 
 ajvFormat(ajv);

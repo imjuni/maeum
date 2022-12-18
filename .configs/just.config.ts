@@ -96,6 +96,21 @@ task('lint', async () => {
   });
 });
 
+task('prettier', async () => {
+  const cmd = 'prettier';
+  const option = '--write src/**/*.ts';
+
+  logger.info('Prettier: ', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+    },
+    stderr: process.stderr,
+    stdout: process.stdout,
+  });
+});
+
 task('+artifact', async () => {
   const cmd = 'ts-node';
   const option = './scripts/artifact.ts';
